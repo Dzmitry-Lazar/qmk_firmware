@@ -297,6 +297,8 @@ void rgblight_set_clipping_range(uint8_t start_pos, uint8_t num_leds);
 void rgblight_set_effect_range(uint8_t start_pos, uint8_t num_leds);
 
 /*   direct operation */
+void rgblight_before_set(void);
+void rgblight_h_at(uint8_t hue, uint8_t index);
 void rgblight_setrgb_at(uint8_t r, uint8_t g, uint8_t b, uint8_t index);
 void rgblight_sethsv_at(uint8_t hue, uint8_t sat, uint8_t val, uint8_t index);
 void rgblight_setrgb_range(uint8_t r, uint8_t g, uint8_t b, uint8_t start, uint8_t end);

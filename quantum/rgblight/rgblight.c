@@ -659,6 +659,33 @@ void rgblight_setrgb(uint8_t r, uint8_t g, uint8_t b) {
     rgblight_set();
 }
 
+__attribute__((weak)) void rgblight_before_set_kb(void) {
+    rgblight_before_set();
+}
+
+__attribute__((weak)) void rgblight_before_set(void) {}
+
+void rgblight_h_at(uint8_t hue, uint8_t index) {
+    if (!rgblight_config.enable || index >= RGBLIGHT_LED_COUNT) {
+        return;
+    }
+
+    sethsv(hue, rgblight_config.sat, rgblight_config.val, (rgb_led_t *)&led[index]);
+}
+
+void rgblight_rgb_at(uint8_t r, uint8_t g, uint8_t b, uint8_t index) {
+    if (!rgblight_config.enable || index >= RGBLIGHT_LED_COUNT) {
+        return;
+    }
+
+    led[index].r = r;
+    led[index].g = g;
+    led[index].b = b;
+#ifdef WS2812_RGBW
+    led[index].w = 0;
+#endif
+}
+
 void rgblight_setrgb_at(uint8_t r, uint8_t g, uint8_t b, uint8_t index) {
     if (!rgblight_config.enable || index >= RGBLIGHT_LED_COUNT) {
         return;
@@ -922,6 +949,8 @@ void rgblight_set(void) {
         rgblight_layers_write();
     }
 #endif
+
+rgblight_before_set_kb();
 
 #ifdef RGBLIGHT_LED_MAP
     rgb_led_t led0[RGBLIGHT_LED_COUNT];
